@@ -1,3 +1,4 @@
 @layer base;
 
+@import "fonts.css";
 @import "base.css" layer(base);

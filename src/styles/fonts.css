@@ -1,0 +1,15 @@
+@font-face {
+  font-family: "Noto Sans";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src:
+    local("Noto Sans"),
+    url("/assets/fonts/noto-sans-variable-font.ttf") format("truetype");
+
+  /* 
+  font-variation-settings
+    "wght" 100 900
+    "wdth" 62 100
+  */
+}
