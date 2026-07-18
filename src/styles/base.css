@@ -9,3 +9,11 @@
   outline: 0.25em solid red;
   outline-offset: 0.25em;
 }
+
+#root {
+  height: 100vh;
+  height: 100svh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  overflow: hidden;
+}

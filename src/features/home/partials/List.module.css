@@ -1,0 +1,19 @@
+.board {
+  display: grid;
+  grid-row: span 2;
+  grid-template-rows: subgrid;
+
+  align-content: start;
+  gap: 1em;
+  background-color: rgb(212, 248, 255);
+  padding: 0.5em;
+  border-radius: 0.5em;
+
+  overflow-y: auto;
+}
+
+.board_info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
