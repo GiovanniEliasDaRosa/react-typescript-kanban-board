@@ -32,9 +32,13 @@ button {
   }
 }
 
-.no_border_button {
+.no_border_button,
+.no_border_input {
   background-color: transparent;
   border: none;
+}
+
+.no_border_button {
   color: hsl(207, 72%, 28%);
 }
 
@@ -42,4 +46,15 @@ button {
   display: flex;
   align-items: center;
   gap: 0.5em;
+}
+
+.square {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+
+  width: 2.5em;
+  height: 2.5em;
+  flex: 0 0 2.5em;
 }

@@ -11,11 +11,33 @@
   border-radius: 0.5em;
 
   overflow-y: auto;
+  height: calc(100vh - 8em);
 }
 
 .board_info {
   display: flex;
   flex-direction: column;
+  gap: 0.5em;
+}
+
+.board_info :is(.board_info_title_input, .board_info_description_input) {
+  padding: 0;
+  border: none;
+}
+
+.board_info_title,
+.board_info_title_input {
+  font-size: 1.25em;
+  font-weight: 600;
+}
+
+.board_info_description_input {
+  resize: vertical;
+}
+
+.buttons_actions {
+  display: flex;
+  justify-content: end;
   gap: 0.5em;
 }
 

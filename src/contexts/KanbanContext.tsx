@@ -10,6 +10,14 @@ type KanbanAction =
       };
     }
   | {
+      type: "EDIT_BOARD";
+      payload: {
+        index: number;
+        title: string;
+        description?: string;
+      };
+    }
+  | {
       type: "ADD_ITEM";
       payload: {
         listIndex: number;
@@ -77,6 +85,21 @@ function KanbanProvider({ children }: KanbanProviderProps) {
       };
 
       const updated = [...state, newList];
+      save(updated);
+      return updated;
+    } else if (action.type == "EDIT_BOARD") {
+      const { index, title, description } = action.payload;
+
+      const updated = state.map((list, i) => {
+        if (i !== index) return list;
+
+        return {
+          ...list,
+          title: title,
+          description: description,
+        };
+      });
+
       save(updated);
       return updated;
     }

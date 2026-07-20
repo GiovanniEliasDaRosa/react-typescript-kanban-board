@@ -1,5 +1,6 @@
-import { ChevronsDownUp, ChevronsUpDown } from "lucide-react";
-import { useMemo } from "react";
+import { Check, ChevronsDownUp, ChevronsUpDown, Pen } from "lucide-react";
+import { useContext, useMemo, useState, type ChangeEvent } from "react";
+import { KanbanContext } from "../../../contexts/KanbanContext";
 import type { List } from "../../../types/types";
 import AddItem from "./AddItem/AddItem";
 import Items from "./Items/Items";
@@ -20,6 +21,12 @@ export default function List({
   isDescriptionExpanded,
   setIsDescriptionExpanded,
 }: ListProps) {
+  const context = useContext(KanbanContext);
+
+  if (!context) throw new Error("KanbanContext missing");
+
+  const { kanbanDispatch } = context;
+
   const descriptionToShow = useMemo(() => {
     const description = list.description;
     if (!description) return null;
@@ -29,39 +36,106 @@ export default function List({
     return description.slice(0, DESCRIPTION_PREVIEW_LENGTH);
   }, [isDescriptionExpanded, list.description]);
 
+  const [isEditing, setIsEditing] = useState(false);
+  const [fields, setFields] = useState({
+    title: list.title,
+    description: list.description ?? "",
+  });
+
+  const editOrSaveAriaLabel = isEditing ? "Save board edits" : "Edit board";
+
+  function handleEditOrSaveEditButton() {
+    const title = fields.title.trim();
+    const description = fields.description.trim();
+
+    if (title.trim() == "") {
+      return;
+    }
+
+    if (isEditing) {
+      kanbanDispatch({
+        type: "EDIT_BOARD",
+        payload: {
+          index: index,
+          title: title,
+          description: description,
+        },
+      });
+
+      setIsEditing(false);
+    } else {
+      setIsEditing(true);
+    }
+  }
+
   return (
     <div className={styles.board}>
       <div className={styles.board_info}>
-        <h2>{list.title}</h2>
-
-        {list.description ? (
+        {isEditing ? (
           <>
-            <p>
-              {descriptionToShow}
+            <input
+              type="text"
+              className={`no_border_input ${styles.board_info_title_input}`}
+              value={fields.title}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                setFields((prevFields) => {
+                  return { ...prevFields, title: e.target.value };
+                });
+              }}
+            />
 
-              {list.description.length > DESCRIPTION_PREVIEW_LENGTH ? (
-                <span>
-                  <button
-                    className="no_border_button icon_button"
-                    onClick={() => setIsDescriptionExpanded((prevExpanded) => !prevExpanded)}
-                  >
-                    {isDescriptionExpanded ? (
-                      <>
-                        <ChevronsDownUp size={16} />
-                        Show Less
-                      </>
-                    ) : (
-                      <>
-                        <ChevronsUpDown size={16} />
-                        Show More
-                      </>
-                    )}
-                  </button>
-                </span>
-              ) : null}
-            </p>
+            <textarea
+              className={`no_border_input ${styles.board_info_description_input}`}
+              value={fields.description}
+              onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
+                setFields((prevFields) => {
+                  return { ...prevFields, description: e.target.value };
+                });
+              }}
+            ></textarea>
           </>
-        ) : null}
+        ) : (
+          <>
+            <p className={styles.board_info_title}>{list.title}</p>
+
+            {list.description ? (
+              <p>
+                {descriptionToShow}
+
+                {list.description.length > DESCRIPTION_PREVIEW_LENGTH ? (
+                  <span>
+                    <button
+                      className="no_border_button icon_button"
+                      onClick={() => setIsDescriptionExpanded((prevExpanded) => !prevExpanded)}
+                    >
+                      {isDescriptionExpanded ? (
+                        <>
+                          <ChevronsDownUp size={16} />
+                          Show Less
+                        </>
+                      ) : (
+                        <>
+                          <ChevronsUpDown size={16} />
+                          Show More
+                        </>
+                      )}
+                    </button>
+                  </span>
+                ) : null}
+              </p>
+            ) : null}
+          </>
+        )}
+
+        <div className={styles.buttons_actions}>
+          <button
+            className={`square`}
+            onClick={handleEditOrSaveEditButton}
+            aria-label={editOrSaveAriaLabel}
+          >
+            {isEditing ? <Check /> : <Pen size={16} />}
+          </button>
+        </div>
       </div>
 
       <div className={styles.board_items}>

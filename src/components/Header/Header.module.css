@@ -5,6 +5,7 @@
   display: flex;
   align-items: center;
   gap: 1em;
+  height: 5em;
 }
 
 .header img {
