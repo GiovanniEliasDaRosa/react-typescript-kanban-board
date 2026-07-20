@@ -1,18 +1,25 @@
 import { ChevronsDownUp, ChevronsUpDown } from "lucide-react";
 import { useMemo } from "react";
 import type { List } from "../../../types/types";
+import AddBoard from "./AddBoard/AddBoard";
 import Items from "./Items/Items";
 import styles from "./List.module.css";
 
 interface ListProps {
   list: List;
+  index: number;
   isDescriptionExpanded: boolean;
   setIsDescriptionExpanded: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const DESCRIPTION_PREVIEW_LENGTH = 255;
 
-export default function List({ list, isDescriptionExpanded, setIsDescriptionExpanded }: ListProps) {
+export default function List({
+  list,
+  index,
+  isDescriptionExpanded,
+  setIsDescriptionExpanded,
+}: ListProps) {
   const descriptionToShow = useMemo(() => {
     const description = list.description;
     if (!description) return null;
@@ -62,7 +69,7 @@ export default function List({ list, isDescriptionExpanded, setIsDescriptionExpa
           <Items key={i} item={item} />
         ))}
 
-        <p>Add</p>
+        <AddBoard listIndex={index} />
       </div>
     </div>
   );

@@ -1,7 +1,13 @@
 import React, { useReducer } from "react";
 import type { List } from "../types/types";
 
-type KanbanAction = {};
+type KanbanAction = {
+  type: "ADD_ITEM";
+  payload: {
+    listIndex: number;
+    content: string;
+  };
+};
 
 type KanbanContextValue = {
   kanbanState: List[];
@@ -37,18 +43,38 @@ function KanbanProvider({ children }: KanbanProviderProps) {
 
     try {
       const boards = JSON.parse(saved);
+      console.log(boards);
       return boards;
     } catch (e) {
       throw new Error("An error occured while trying to load boards");
     }
   }
 
-  function kanbanReducer(state: List[], action: KanbanAction): List[] {
-    let updated: List[] = state;
-
+  function save(updated: List[]) {
     localStorage.setItem("boards", JSON.stringify(updated));
+  }
 
-    return updated;
+  function kanbanReducer(state: List[], action: KanbanAction): List[] {
+    console.log("kanbanReducer");
+    console.log(state, action);
+
+    if (action.type == "ADD_ITEM") {
+      const { listIndex, content } = action.payload;
+
+      const updated = state.map((list, i) => {
+        if (i !== listIndex) return list;
+
+        return {
+          ...list,
+          items: [...list.items, { content }],
+        };
+      });
+
+      save(updated);
+      return updated;
+    }
+
+    return state;
   }
 
   const [kanbanState, kanbanDispatch] = useReducer(

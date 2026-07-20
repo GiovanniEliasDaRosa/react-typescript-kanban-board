@@ -11,16 +11,17 @@ function HomePage() {
 
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState<boolean>(false);
 
-  const { kanbanState, kanbanDispatch } = context;
+  const { kanbanState } = context;
 
   return (
     <>
       <Header />
 
       <div className={styles.boards}>
-        {kanbanState.map((list) => (
+        {kanbanState.map((list, index) => (
           <List
             list={list}
+            index={index}
             isDescriptionExpanded={isDescriptionExpanded}
             setIsDescriptionExpanded={setIsDescriptionExpanded}
           />
