@@ -1,7 +1,7 @@
 import { Plus } from "lucide-react";
 import { useContext, useRef, type SubmitEvent } from "react";
 import { KanbanContext } from "../../../../contexts/KanbanContext";
-import styles from "./AddBoard.module.css";
+import styles from "./AddItem.module.css";
 
 interface AddBoardProps {
   listIndex: number;

@@ -1,7 +1,7 @@
 import { ChevronsDownUp, ChevronsUpDown } from "lucide-react";
 import { useMemo } from "react";
 import type { List } from "../../../types/types";
-import AddBoard from "./AddBoard/AddBoard";
+import AddItem from "./AddItem/AddItem";
 import Items from "./Items/Items";
 import styles from "./List.module.css";
 
@@ -69,7 +69,7 @@ export default function List({
           <Items key={i} item={item} />
         ))}
 
-        <AddBoard listIndex={index} />
+        <AddItem listIndex={index} />
       </div>
     </div>
   );
