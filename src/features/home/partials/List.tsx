@@ -1,3 +1,4 @@
+import { ChevronsDownUp, ChevronsUpDown } from "lucide-react";
 import { useMemo } from "react";
 import type { List } from "../../../types/types";
 import Items from "./Items/Items";
@@ -32,9 +33,24 @@ export default function List({ list, isDescriptionExpanded, setIsDescriptionExpa
               {descriptionToShow}
 
               {list.description.length > DESCRIPTION_PREVIEW_LENGTH ? (
-                <button onClick={() => setIsDescriptionExpanded((prevExpanded) => !prevExpanded)}>
-                  Show {isDescriptionExpanded ? "Less" : "More"}
-                </button>
+                <span>
+                  <button
+                    className="no_border_button icon_button"
+                    onClick={() => setIsDescriptionExpanded((prevExpanded) => !prevExpanded)}
+                  >
+                    {isDescriptionExpanded ? (
+                      <>
+                        <ChevronsDownUp size={16} />
+                        Show Less
+                      </>
+                    ) : (
+                      <>
+                        <ChevronsUpDown size={16} />
+                        Show More
+                      </>
+                    )}
+                  </button>
+                </span>
               ) : null}
             </p>
           </>
