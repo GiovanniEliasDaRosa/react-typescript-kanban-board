@@ -1,4 +1,5 @@
-@layer base;
+@layer base, inputs;
 
 @import "fonts.css";
 @import "base.css" layer(base);
+@import "inputs.css" layer(inputs);

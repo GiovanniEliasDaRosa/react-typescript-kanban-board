@@ -1,0 +1,43 @@
+input,
+button {
+  font-size: 1rem;
+  border-radius: 0.5em;
+  color: hsl(0, 0%, 0%);
+}
+
+input {
+  background-color: hsl(210, 43%, 95%);
+  border: solid 0.125em hsl(208, 84%, 14%);
+  padding: 0.25em 0.25em;
+
+  &:hover {
+    background-color: hsl(212, 48%, 94%);
+  }
+}
+
+button {
+  background-color: hsl(209, 44%, 89%);
+  border: solid 0.125em hsl(208, 84%, 14%);
+  padding: 0.5em 1em;
+  cursor: pointer;
+
+  &:hover {
+    background-color: hsl(210, 56%, 87%);
+  }
+
+  &:is(:active, :focus-visible) {
+    background-color: hsl(210, 38%, 75%);
+  }
+}
+
+.no_border_button {
+  background-color: transparent;
+  border: none;
+  color: hsl(207, 72%, 28%);
+}
+
+.icon_button {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
