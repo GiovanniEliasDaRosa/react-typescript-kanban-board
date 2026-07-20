@@ -3,11 +3,11 @@ import { useContext, useRef, type SubmitEvent } from "react";
 import { KanbanContext } from "../../../../contexts/KanbanContext";
 import styles from "./AddItem.module.css";
 
-interface AddBoardProps {
+interface AddItemProps {
   listIndex: number;
 }
 
-export default function AddBoard({ listIndex }: AddBoardProps) {
+export default function AddItem({ listIndex }: AddItemProps) {
   const context = useContext(KanbanContext);
 
   if (!context) throw new Error("KanbanContext missing");

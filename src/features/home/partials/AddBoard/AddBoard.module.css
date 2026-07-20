@@ -1,0 +1,17 @@
+.add {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+
+  grid-row: span 2;
+
+  overflow-y: auto;
+}
+
+.add textarea {
+  resize: vertical;
+}
+
+.add button {
+  justify-content: center;
+}

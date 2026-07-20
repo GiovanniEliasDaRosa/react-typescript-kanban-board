@@ -1,3 +1,4 @@
+textarea,
 input,
 button {
   font-size: 1rem;
@@ -5,6 +6,7 @@ button {
   color: hsl(0, 0%, 0%);
 }
 
+textarea,
 input {
   background-color: hsl(210, 43%, 95%);
   border: solid 0.125em hsl(208, 84%, 14%);

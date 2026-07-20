@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import Header from "../../components/Header/Header";
 import { KanbanContext } from "../../contexts/KanbanContext";
 import styles from "./HomePage.module.css";
+import AddBoard from "./partials/AddBoard/AddBoard";
 import List from "./partials/List";
 
 function HomePage() {
@@ -26,6 +27,8 @@ function HomePage() {
             setIsDescriptionExpanded={setIsDescriptionExpanded}
           />
         ))}
+
+        <AddBoard />
       </div>
     </>
   );

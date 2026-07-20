@@ -1,13 +1,21 @@
 import React, { useReducer } from "react";
 import type { List } from "../types/types";
 
-type KanbanAction = {
-  type: "ADD_ITEM";
-  payload: {
-    listIndex: number;
-    content: string;
-  };
-};
+type KanbanAction =
+  | {
+      type: "ADD_BOARD";
+      payload: {
+        title: string;
+        description?: string;
+      };
+    }
+  | {
+      type: "ADD_ITEM";
+      payload: {
+        listIndex: number;
+        content: string;
+      };
+    };
 
 type KanbanContextValue = {
   kanbanState: List[];
@@ -58,6 +66,22 @@ function KanbanProvider({ children }: KanbanProviderProps) {
     console.log("kanbanReducer");
     console.log(state, action);
 
+    // MARK: BOARDS
+    if (action.type == "ADD_BOARD") {
+      const { title, description } = action.payload;
+
+      const newList: List = {
+        title: title,
+        ...(description ? { description: description } : {}),
+        items: [],
+      };
+
+      const updated = [...state, newList];
+      save(updated);
+      return updated;
+    }
+
+    // MARK: ITEMS
     if (action.type == "ADD_ITEM") {
       const { listIndex, content } = action.payload;
 
