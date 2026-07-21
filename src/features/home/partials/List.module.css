@@ -37,15 +37,10 @@
 
 .buttons_actions {
   display: flex;
-  justify-content: end;
+  justify-content: space-between;
   gap: 0.5em;
 }
 
-.board_info span {
-  padding-left: 0.5em;
-  display: inline-block;
-}
-
 .board_info button {
-  padding: 0.125em;
+  padding: 0.25em 0.5em;
 }

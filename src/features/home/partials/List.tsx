@@ -1,4 +1,4 @@
-import { Check, ChevronsDownUp, ChevronsUpDown, Pen } from "lucide-react";
+import { Check, ChevronsDownUp, ChevronsUpDown, Pen, Trash2 } from "lucide-react";
 import { useContext, useMemo, useState, type ChangeEvent } from "react";
 import { KanbanContext } from "../../../contexts/KanbanContext";
 import type { List } from "../../../types/types";
@@ -68,6 +68,19 @@ export default function List({
     }
   }
 
+  function handleDeleteButton() {
+    const confirm = prompt("Do you really want to delete this card?\nType yes to confirm");
+
+    if (confirm?.toLowerCase() == "yes") {
+      kanbanDispatch({
+        type: "DELETE_BOARD",
+        payload: {
+          index: index,
+        },
+      });
+    }
+  }
+
   return (
     <div className={styles.board}>
       <div className={styles.board_info}>
@@ -103,24 +116,22 @@ export default function List({
                 {descriptionToShow}
 
                 {list.description.length > DESCRIPTION_PREVIEW_LENGTH ? (
-                  <span>
-                    <button
-                      className="no_border_button icon_button"
-                      onClick={() => setIsDescriptionExpanded((prevExpanded) => !prevExpanded)}
-                    >
-                      {isDescriptionExpanded ? (
-                        <>
-                          <ChevronsDownUp size={16} />
-                          Show Less
-                        </>
-                      ) : (
-                        <>
-                          <ChevronsUpDown size={16} />
-                          Show More
-                        </>
-                      )}
-                    </button>
-                  </span>
+                  <button
+                    className="no_border_button icon_button"
+                    onClick={() => setIsDescriptionExpanded((prevExpanded) => !prevExpanded)}
+                  >
+                    {isDescriptionExpanded ? (
+                      <>
+                        <ChevronsDownUp size={16} />
+                        Show Less
+                      </>
+                    ) : (
+                      <>
+                        <ChevronsUpDown size={16} />
+                        Show More
+                      </>
+                    )}
+                  </button>
                 ) : null}
               </p>
             ) : null}
@@ -128,6 +139,10 @@ export default function List({
         )}
 
         <div className={styles.buttons_actions}>
+          <button className={`square`} onClick={handleDeleteButton} aria-label="Delete this board">
+            <Trash2 />
+          </button>
+
           <button
             className={`square`}
             onClick={handleEditOrSaveEditButton}

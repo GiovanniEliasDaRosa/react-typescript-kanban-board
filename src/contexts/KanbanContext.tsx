@@ -18,6 +18,12 @@ type KanbanAction =
       };
     }
   | {
+      type: "DELETE_BOARD";
+      payload: {
+        index: number;
+      };
+    }
+  | {
       type: "ADD_ITEM";
       payload: {
         listIndex: number;
@@ -99,6 +105,13 @@ function KanbanProvider({ children }: KanbanProviderProps) {
           description: description,
         };
       });
+
+      save(updated);
+      return updated;
+    } else if (action.type == "DELETE_BOARD") {
+      const { index } = action.payload;
+
+      const updated = state.filter((_, i) => i !== index);
 
       save(updated);
       return updated;
