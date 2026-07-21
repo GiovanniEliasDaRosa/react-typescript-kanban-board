@@ -23,13 +23,19 @@ button {
   padding: 0.5em 1em;
   cursor: pointer;
 
-  &:hover {
+  &:not([disabled]):hover {
     background-color: hsl(210, 56%, 87%);
   }
 
-  &:is(:active, :focus-visible) {
+  &:not([disabled]):is(:active, :focus-visible) {
     background-color: hsl(210, 38%, 75%);
   }
+}
+
+[disabled] {
+  filter: grayscale(100%);
+  border: solid 0.125em hsl(210, 19%, 58%);
+  cursor: not-allowed;
 }
 
 .no_border_button,
