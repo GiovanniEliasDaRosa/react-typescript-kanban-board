@@ -3,6 +3,7 @@
   grid-auto-flow: column;
   grid-auto-columns: 50ch;
   grid-template-rows: auto 1fr;
+  height: calc(100vh - 5em);
 
   gap: 1em;
   padding: 1em;

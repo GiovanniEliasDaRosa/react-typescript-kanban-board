@@ -24,6 +24,13 @@ type KanbanAction =
       };
     }
   | {
+      type: "MOVE_BOARD";
+      payload: {
+        index: number;
+        direction: number;
+      };
+    }
+  | {
       type: "ADD_ITEM";
       payload: {
         listIndex: number;
@@ -112,6 +119,23 @@ function KanbanProvider({ children }: KanbanProviderProps) {
       const { index } = action.payload;
 
       const updated = state.filter((_, i) => i !== index);
+
+      save(updated);
+      return updated;
+    } else if (action.type == "MOVE_BOARD") {
+      const { index, direction } = action.payload;
+
+      const toPosition = index + direction;
+
+      if (toPosition < 0 || toPosition >= state.length) {
+        return state;
+      }
+
+      const updated = [...state];
+
+      const temp = updated[toPosition];
+      updated[toPosition] = updated[index];
+      updated[index] = temp;
 
       save(updated);
       return updated;

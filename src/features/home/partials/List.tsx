@@ -1,4 +1,12 @@
-import { Check, ChevronsDownUp, ChevronsUpDown, Pen, Trash2 } from "lucide-react";
+import {
+  Check,
+  ChevronsDownUp,
+  ChevronsUpDown,
+  MoveLeft,
+  MoveRight,
+  Pen,
+  Trash2,
+} from "lucide-react";
 import { useContext, useMemo, useState, type ChangeEvent } from "react";
 import { KanbanContext } from "../../../contexts/KanbanContext";
 import type { List } from "../../../types/types";
@@ -25,7 +33,7 @@ export default function List({
 
   if (!context) throw new Error("KanbanContext missing");
 
-  const { kanbanDispatch } = context;
+  const { kanbanState, kanbanDispatch } = context;
 
   const descriptionToShow = useMemo(() => {
     const description = list.description;
@@ -36,6 +44,7 @@ export default function List({
     return description.slice(0, DESCRIPTION_PREVIEW_LENGTH);
   }, [isDescriptionExpanded, list.description]);
 
+  const quantityOfBoards = kanbanState.length - 1;
   const [isEditing, setIsEditing] = useState(false);
   const [fields, setFields] = useState({
     title: list.title,
@@ -81,75 +90,126 @@ export default function List({
     }
   }
 
+  function handleMoveButton(direction: string) {
+    if (direction == "right") {
+      kanbanDispatch({
+        type: "MOVE_BOARD",
+        payload: {
+          index: index,
+          direction: 1,
+        },
+      });
+    } else {
+      kanbanDispatch({
+        type: "MOVE_BOARD",
+        payload: {
+          index: index,
+          direction: -1,
+        },
+      });
+    }
+  }
+
   return (
     <div className={styles.board}>
       <div className={styles.board_info}>
-        {isEditing ? (
-          <>
-            <input
-              type="text"
-              className={`no_border_input ${styles.board_info_title_input}`}
-              value={fields.title}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                setFields((prevFields) => {
-                  return { ...prevFields, title: e.target.value };
-                });
-              }}
-            />
+        <div className={styles.board_info_top}>
+          {isEditing ? (
+            <>
+              <input
+                type="text"
+                className={`no_border_input ${styles.board_info_title_input}`}
+                value={fields.title}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                  setFields((prevFields) => {
+                    return { ...prevFields, title: e.target.value };
+                  });
+                }}
+              />
 
-            <textarea
-              className={`no_border_input ${styles.board_info_description_input}`}
-              value={fields.description}
-              onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
-                setFields((prevFields) => {
-                  return { ...prevFields, description: e.target.value };
-                });
-              }}
-            ></textarea>
-          </>
-        ) : (
-          <>
-            <p className={styles.board_info_title}>{list.title}</p>
+              <textarea
+                className={`no_border_input ${styles.board_info_description_input}`}
+                value={fields.description}
+                onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
+                  setFields((prevFields) => {
+                    return { ...prevFields, description: e.target.value };
+                  });
+                }}
+              ></textarea>
+            </>
+          ) : (
+            <>
+              <p className={styles.board_info_title}>{list.title}</p>
 
-            {list.description ? (
-              <p>
-                {descriptionToShow}
-
-                {list.description.length > DESCRIPTION_PREVIEW_LENGTH ? (
-                  <button
-                    className="no_border_button icon_button"
-                    onClick={() => setIsDescriptionExpanded((prevExpanded) => !prevExpanded)}
-                  >
-                    {isDescriptionExpanded ? (
-                      <>
-                        <ChevronsDownUp size={16} />
-                        Show Less
-                      </>
-                    ) : (
-                      <>
-                        <ChevronsUpDown size={16} />
-                        Show More
-                      </>
-                    )}
-                  </button>
-                ) : null}
-              </p>
-            ) : null}
-          </>
-        )}
+              {list.description ? (
+                <>
+                  <p>{descriptionToShow}</p>
+                  {list.description.length > DESCRIPTION_PREVIEW_LENGTH ? (
+                    <button
+                      className="no_border_button icon_button"
+                      onClick={() => setIsDescriptionExpanded((prevExpanded) => !prevExpanded)}
+                    >
+                      {isDescriptionExpanded ? (
+                        <>
+                          <ChevronsDownUp size={16} />
+                          Show Less
+                        </>
+                      ) : (
+                        <>
+                          <ChevronsUpDown size={16} />
+                          Show More
+                        </>
+                      )}
+                    </button>
+                  ) : null}
+                </>
+              ) : null}
+            </>
+          )}
+        </div>
 
         <div className={styles.buttons_actions}>
-          <button className={`square`} onClick={handleDeleteButton} aria-label="Delete this board">
-            <Trash2 />
-          </button>
+          <div className={styles.buttons_actions_group}>
+            <button
+              className={`square`}
+              onClick={handleDeleteButton}
+              aria-label="Delete this board"
+            >
+              <Trash2 />
+            </button>
 
-          <button
-            className={`square`}
-            onClick={handleEditOrSaveEditButton}
-            aria-label={editOrSaveAriaLabel}
-          >
-            {isEditing ? <Check /> : <Pen size={16} />}
-          </button>
+            <button
+              className={`square`}
+              onClick={handleEditOrSaveEditButton}
+              aria-label={editOrSaveAriaLabel}
+            >
+              {isEditing ? <Check /> : <Pen size={16} />}
+            </button>
+          </div>
+
+          <div className={styles.buttons_actions_group}>
+            <button
+              className={`square`}
+              onClick={() => {
+                handleMoveButton("left");
+              }}
+              aria-label="Move board to left"
+              disabled={index - 1 < 0}
+            >
+              <MoveLeft />
+            </button>
+
+            <button
+              className={`square`}
+              onClick={() => {
+                handleMoveButton("right");
+              }}
+              aria-label="Move board to right"
+              disabled={index + 1 > quantityOfBoards}
+            >
+              <MoveRight />
+            </button>
+          </div>
         </div>
       </div>
 
