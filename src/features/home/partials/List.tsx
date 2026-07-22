@@ -19,6 +19,7 @@ interface ListProps {
   index: number;
   isDescriptionExpanded: boolean;
   setIsDescriptionExpanded: React.Dispatch<React.SetStateAction<boolean>>;
+  selectSwapDialogRef?: React.RefObject<HTMLDialogElement | null>;
 }
 
 const DESCRIPTION_PREVIEW_LENGTH = 255;
@@ -28,6 +29,7 @@ export default function List({
   index,
   isDescriptionExpanded,
   setIsDescriptionExpanded,
+  selectSwapDialogRef,
 }: ListProps) {
   const context = useContext(KanbanContext);
 
@@ -220,6 +222,7 @@ export default function List({
             item={item}
             boardIndex={index}
             itemIndex={i}
+            selectSwapDialogRef={selectSwapDialogRef}
           />
         ))}
 

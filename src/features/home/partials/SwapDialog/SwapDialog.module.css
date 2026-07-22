@@ -1,0 +1,59 @@
+.swap_dialog {
+  height: unset;
+  max-width: unset;
+  max-height: unset;
+  width: min(100%, 80ch);
+
+  margin-inline: auto;
+  overflow: visible;
+  padding: 1em;
+
+  border: none;
+  background-color: transparent;
+}
+
+.dialog[open] {
+  display: flex;
+  justify-content: safe center;
+  align-items: safe center;
+  gap: 1em;
+}
+
+.swap_dialog::backdrop {
+  background-color: hsla(0, 0%, 0%, 0.25);
+}
+
+.swap_dialog_content {
+  display: grid;
+  gap: 1em;
+
+  max-height: calc(100vh - 2em);
+
+  padding: 1em;
+  border-radius: 1em;
+  background-color: hsl(207, 100%, 89%);
+  width: min(100%, 80ch);
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.swap_dialog_content_header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.swap_dialog_content_header_item_name {
+  padding: 0.25em 0.5em;
+  border-radius: 0.5em;
+  background-color: hsl(207, 100%, 95%);
+}
+
+.swap_dialog_options {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(10em, 100%), 1fr));
+  gap: 0.5em;
+  overflow: hidden;
+}

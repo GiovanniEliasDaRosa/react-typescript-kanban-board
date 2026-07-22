@@ -1,4 +1,4 @@
-import { ChevronDown, ChevronUp, Trash } from "lucide-react";
+import { ChevronDown, ChevronUp, List, Trash } from "lucide-react";
 import { useContext, useEffect, useRef, useState } from "react";
 import { KanbanContext } from "../../../../contexts/KanbanContext";
 import type { ListItem } from "../../../../types/types";
@@ -8,14 +8,15 @@ interface ItemsProps {
   boardIndex: number;
   itemIndex: number;
   item: ListItem;
+  selectSwapDialogRef?: React.RefObject<HTMLDialogElement | null>;
 }
 
-export default function Items({ boardIndex, itemIndex, item }: ItemsProps) {
+export default function Items({ boardIndex, itemIndex, item, selectSwapDialogRef }: ItemsProps) {
   const context = useContext(KanbanContext);
 
   if (!context) throw new Error("KanbanContext missing");
 
-  const { kanbanState, kanbanDispatch } = context;
+  const { kanbanState, kanbanDispatch, setItemSwapping } = context;
 
   const [content, setContent] = useState(item.content);
   const editTimeoutRef = useRef<number>(null);
@@ -78,6 +79,17 @@ export default function Items({ boardIndex, itemIndex, item }: ItemsProps) {
     }
   }
 
+  function handleSwapButton() {
+    if (selectSwapDialogRef == null || selectSwapDialogRef.current == null) return;
+
+    setItemSwapping({
+      boardIndex: boardIndex,
+      itemIndex: itemIndex,
+    });
+
+    selectSwapDialogRef.current.showModal();
+  }
+
   useEffect(() => {
     return () => {
       if (editTimeoutRef.current) {
@@ -113,6 +125,9 @@ export default function Items({ boardIndex, itemIndex, item }: ItemsProps) {
           disabled={itemIndex + 1 > quantityOfItems}
         >
           <ChevronDown />
+        </button>
+        <button className="square" aria-label="Swap item between boards" onClick={handleSwapButton}>
+          <List />
         </button>
       </div>
     </div>

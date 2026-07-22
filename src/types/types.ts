@@ -7,3 +7,8 @@ export type List = {
   items: ListItem[];
   description?: string;
 };
+
+export type ItemSwapping = {
+  boardIndex: number;
+  itemIndex: number;
+};

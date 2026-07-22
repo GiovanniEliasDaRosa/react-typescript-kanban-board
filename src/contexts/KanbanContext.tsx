@@ -1,5 +1,5 @@
-import React, { useReducer } from "react";
-import type { List } from "../types/types";
+import React, { useReducer, useState } from "react";
+import type { ItemSwapping, List } from "../types/types";
 
 type KanbanAction =
   | {
@@ -59,11 +59,21 @@ type KanbanAction =
         itemIndex: number;
         direction: number;
       };
+    }
+  | {
+      type: "SWAP_ITEM";
+      payload: {
+        fromBoardIndex: number;
+        toBoardIndex: number;
+        fromItemIndex: number;
+      };
     };
 
 type KanbanContextValue = {
   kanbanState: List[];
   kanbanDispatch: React.Dispatch<KanbanAction>;
+  itemSwapping: ItemSwapping | null;
+  setItemSwapping: React.Dispatch<React.SetStateAction<ItemSwapping | null>>;
 };
 
 export const DEFAULT_KANBAN_STATE: List[] = [
@@ -88,6 +98,10 @@ interface KanbanProviderProps {
 }
 
 function KanbanProvider({ children }: KanbanProviderProps) {
+  const [itemSwapping, setItemSwapping] = useState<ItemSwapping | null>(null);
+
+  console.warn(itemSwapping);
+
   function initialKanbanState(): List[] {
     const saved: string | null = localStorage.getItem("boards");
 
@@ -239,6 +253,34 @@ function KanbanProvider({ children }: KanbanProviderProps) {
 
       save(updated);
       return updated;
+    } else if (action.type == "SWAP_ITEM") {
+      const { fromBoardIndex, toBoardIndex, fromItemIndex } = action.payload;
+
+      const updated = [...state];
+
+      const fromBoard = updated[fromBoardIndex];
+      const toBoard = updated[toBoardIndex];
+
+      // If any problem, stop here
+      if (!fromBoard || !toBoard) return state;
+
+      // Invalid move
+      if (fromItemIndex < 0 || fromItemIndex >= fromBoard.items.length) return state;
+
+      const sourceItems = [...fromBoard.items];
+      const targetItems = [...toBoard.items];
+
+      console.log(sourceItems);
+
+      const [moved] = sourceItems.splice(fromItemIndex, 1);
+      targetItems.push(moved);
+
+      const next = [...updated];
+      next[fromBoardIndex] = { ...fromBoard, items: sourceItems };
+      next[toBoardIndex] = { ...toBoard, items: targetItems };
+
+      save(next);
+      return next;
     }
 
     return state;
@@ -251,7 +293,7 @@ function KanbanProvider({ children }: KanbanProviderProps) {
   );
 
   return (
-    <KanbanContext.Provider value={{ kanbanState, kanbanDispatch }}>
+    <KanbanContext.Provider value={{ kanbanState, kanbanDispatch, itemSwapping, setItemSwapping }}>
       {children}
     </KanbanContext.Provider>
   );
