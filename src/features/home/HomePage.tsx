@@ -21,6 +21,7 @@ function HomePage() {
       <div className={styles.boards}>
         {kanbanState.map((list, index) => (
           <List
+            key={`board-${list.title}-${index}`}
             list={list}
             index={index}
             isDescriptionExpanded={isDescriptionExpanded}

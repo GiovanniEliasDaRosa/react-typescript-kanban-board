@@ -44,6 +44,16 @@ export default function Items({ boardIndex, itemIndex, item }: ItemsProps) {
     debouceUpdateChange(value);
   }
 
+  function handleDelete() {
+    kanbanDispatch({
+      type: "DELETE_ITEM",
+      payload: {
+        boardIndex: boardIndex,
+        itemIndex: itemIndex,
+      },
+    });
+  }
+
   useEffect(() => {
     return () => {
       if (editTimeoutRef.current) {
@@ -57,7 +67,7 @@ export default function Items({ boardIndex, itemIndex, item }: ItemsProps) {
       <input className="no_border_input" type="text" value={content} onChange={handleChange} />
 
       <div className={styles.actions}>
-        <button className="square" aria-label="Delete item">
+        <button className="square" aria-label="Delete item" onClick={handleDelete}>
           <Trash />
         </button>
         <button className="square" aria-label="Move item up">

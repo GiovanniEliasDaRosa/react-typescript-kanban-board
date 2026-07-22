@@ -44,6 +44,13 @@ type KanbanAction =
         itemIndex: number;
         content: string;
       };
+    }
+  | {
+      type: "DELETE_ITEM";
+      payload: {
+        boardIndex: number;
+        itemIndex: number;
+      };
     };
 
 type KanbanContextValue = {
@@ -182,6 +189,20 @@ function KanbanProvider({ children }: KanbanProviderProps) {
           }),
         };
       });
+      save(updated);
+      return updated;
+    } else if (action.type == "DELETE_ITEM") {
+      const { boardIndex, itemIndex } = action.payload;
+
+      const updated = state.map((list, i) => {
+        if (i !== boardIndex) return list;
+
+        return {
+          ...list,
+          items: list.items.filter((_, j) => j !== itemIndex),
+        };
+      });
+
       save(updated);
       return updated;
     }
