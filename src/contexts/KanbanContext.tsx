@@ -51,6 +51,14 @@ type KanbanAction =
         boardIndex: number;
         itemIndex: number;
       };
+    }
+  | {
+      type: "MOVE_ITEM";
+      payload: {
+        boardIndex: number;
+        itemIndex: number;
+        direction: number;
+      };
     };
 
 type KanbanContextValue = {
@@ -200,6 +208,32 @@ function KanbanProvider({ children }: KanbanProviderProps) {
         return {
           ...list,
           items: list.items.filter((_, j) => j !== itemIndex),
+        };
+      });
+
+      save(updated);
+      return updated;
+    } else if (action.type == "MOVE_ITEM") {
+      const { boardIndex, itemIndex, direction } = action.payload;
+
+      const toPosition = itemIndex + direction;
+
+      const updated = state.map((list, i) => {
+        if (i !== boardIndex) return list;
+
+        const items = [...list.items];
+
+        if (toPosition < 0 || toPosition >= items.length) {
+          return list;
+        }
+
+        const temp = items[toPosition];
+        items[toPosition] = items[itemIndex];
+        items[itemIndex] = temp;
+
+        return {
+          ...list,
+          items: items,
         };
       });
 

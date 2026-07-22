@@ -15,10 +15,12 @@ export default function Items({ boardIndex, itemIndex, item }: ItemsProps) {
 
   if (!context) throw new Error("KanbanContext missing");
 
-  const { kanbanDispatch } = context;
+  const { kanbanState, kanbanDispatch } = context;
 
   const [content, setContent] = useState(item.content);
   const editTimeoutRef = useRef<number>(null);
+
+  const quantityOfItems = kanbanState[boardIndex].items.length - 1;
 
   function debouceUpdateChange(value: string) {
     editTimeoutRef.current = setTimeout(() => {
@@ -54,6 +56,28 @@ export default function Items({ boardIndex, itemIndex, item }: ItemsProps) {
     });
   }
 
+  function handleMoveButton(direction: string) {
+    if (direction == "up") {
+      kanbanDispatch({
+        type: "MOVE_ITEM",
+        payload: {
+          boardIndex: boardIndex,
+          itemIndex: itemIndex,
+          direction: -1,
+        },
+      });
+    } else {
+      kanbanDispatch({
+        type: "MOVE_ITEM",
+        payload: {
+          boardIndex: boardIndex,
+          itemIndex: itemIndex,
+          direction: 1,
+        },
+      });
+    }
+  }
+
   useEffect(() => {
     return () => {
       if (editTimeoutRef.current) {
@@ -70,10 +94,24 @@ export default function Items({ boardIndex, itemIndex, item }: ItemsProps) {
         <button className="square" aria-label="Delete item" onClick={handleDelete}>
           <Trash />
         </button>
-        <button className="square" aria-label="Move item up">
+        <button
+          className="square"
+          aria-label="Move item up"
+          onClick={() => {
+            handleMoveButton("up");
+          }}
+          disabled={itemIndex - 1 < 0}
+        >
           <ChevronUp />
         </button>
-        <button className="square" aria-label="Move item down">
+        <button
+          className="square"
+          aria-label="Move item down"
+          onClick={() => {
+            handleMoveButton("down");
+          }}
+          disabled={itemIndex + 1 > quantityOfItems}
+        >
           <ChevronDown />
         </button>
       </div>
