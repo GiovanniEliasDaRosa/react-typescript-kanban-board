@@ -215,7 +215,7 @@ export default function List({
 
       <div className={styles.board_items}>
         {list.items.map((item, i) => (
-          <Items key={i} item={item} />
+          <Items key={i} item={item} boardIndex={index} itemIndex={i} />
         ))}
 
         <AddItem listIndex={index} />

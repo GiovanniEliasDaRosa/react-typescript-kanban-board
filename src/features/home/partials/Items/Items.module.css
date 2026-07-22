@@ -1,0 +1,27 @@
+.item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.5em;
+
+  border-radius: 0.5em;
+  padding: 0.25em;
+}
+
+.item input {
+  background-color: transparent;
+}
+
+.item:is(:has(:focus-visible), :hover) {
+  background-color: hsl(211, 66%, 90%);
+}
+
+.actions {
+  display: flex;
+  gap: 0.5em;
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
+
+.item:is(:has(:focus-visible), :hover) .actions {
+  opacity: 1;
+}

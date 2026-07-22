@@ -36,6 +36,14 @@ type KanbanAction =
         listIndex: number;
         content: string;
       };
+    }
+  | {
+      type: "EDIT_ITEM";
+      payload: {
+        boardIndex: number;
+        itemIndex: number;
+        content: string;
+      };
     };
 
 type KanbanContextValue = {
@@ -154,6 +162,26 @@ function KanbanProvider({ children }: KanbanProviderProps) {
         };
       });
 
+      save(updated);
+      return updated;
+    } else if (action.type == "EDIT_ITEM") {
+      const { boardIndex, itemIndex, content } = action.payload;
+
+      const updated = state.map((list, i) => {
+        if (i !== boardIndex) return list;
+
+        return {
+          ...list,
+          items: list.items.map((item, j) => {
+            if (j !== itemIndex) return item;
+
+            return {
+              ...item,
+              content: content,
+            };
+          }),
+        };
+      });
       save(updated);
       return updated;
     }
