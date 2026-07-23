@@ -17,7 +17,6 @@ export default function SwapDialog({ selectSwapDialogRef }: SwapDialogProps) {
     itemSwapping == null
       ? ""
       : kanbanState[itemSwapping.boardIndex]?.items[itemSwapping.itemIndex]?.content;
-  console.log("A");
 
   function closeDialog() {
     if (selectSwapDialogRef == null || selectSwapDialogRef.current == null) return;

@@ -100,8 +100,6 @@ interface KanbanProviderProps {
 function KanbanProvider({ children }: KanbanProviderProps) {
   const [itemSwapping, setItemSwapping] = useState<ItemSwapping | null>(null);
 
-  console.warn(itemSwapping);
-
   function initialKanbanState(): List[] {
     const saved: string | null = localStorage.getItem("boards");
 
@@ -109,7 +107,6 @@ function KanbanProvider({ children }: KanbanProviderProps) {
 
     try {
       const boards = JSON.parse(saved);
-      console.log(boards);
       return boards;
     } catch (e) {
       throw new Error("An error occured while trying to load boards");
@@ -121,9 +118,6 @@ function KanbanProvider({ children }: KanbanProviderProps) {
   }
 
   function kanbanReducer(state: List[], action: KanbanAction): List[] {
-    console.log("kanbanReducer");
-    console.log(state, action);
-
     // MARK: BOARDS
     if (action.type == "ADD_BOARD") {
       const { title, description } = action.payload;
