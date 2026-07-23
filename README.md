@@ -1,6 +1,6 @@
 # React TypeScript Kanban Board
 
-![License](https://img.shields.io/github/license/giovannieliasdarosa/react-typescript-kanban-board?style=for-the-badge)
+![License](https://img.shields.io/github/license/GiovanniEliasDaRosa/react-typescript-kanban-board?style=for-the-badge)
 
 [![React, TypeScript, HTML, CSS](https://skillicons.dev/icons?i=react,ts,html,css)](https://skillicons.dev)
 
