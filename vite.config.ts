@@ -5,4 +5,7 @@ import { defineConfig } from "vite";
 export default defineConfig({
   base: "/react-typescript-kanban-board/",
   plugins: [react()],
+  build: {
+    sourcemap: false,
+  },
 });
