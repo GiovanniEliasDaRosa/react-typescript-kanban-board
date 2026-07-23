@@ -79,15 +79,33 @@ type KanbanContextValue = {
 export const DEFAULT_KANBAN_STATE: List[] = [
   {
     title: "To Do",
-    items: [],
+    items: [
+      {
+        content: "Item 1",
+      },
+      {
+        content: "Item 2",
+      },
+    ],
   },
   {
     title: "In progress",
-    items: [],
+    items: [
+      {
+        content: "Item 3",
+      },
+    ],
   },
   {
     title: "Done",
-    items: [],
+    items: [
+      {
+        content: "Item 4",
+      },
+      {
+        content: "Item 5",
+      },
+    ],
   },
 ];
 
